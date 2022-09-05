@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -o pipefail
 
 if [ -z "${linting_path}" ] ; then
   echo " [!] Missing required input: linting_path"
@@ -6,7 +8,7 @@ if [ -z "${linting_path}" ] ; then
   exit 1
 fi
 
-FLAGS=""
+FLAGS="${linting_files}"
 if [ "${strict}" = "yes" ] ; then
   FLAGS="--strict $FLAGS"
 fi
@@ -17,7 +19,7 @@ fi
 
 cd "${linting_path}"
 
-output="$(swiftlint lint --reporter "${reporter}" ${FLAGS} ${linting_files})"
+output="$(swiftlint lint --reporter "${reporter}" ${FLAGS})"
 envman add --key "SWIFTLINT_REPORT" --value "${output}"
 echo "Saved swiftlint output in SWIFTLINT_REPORT"
 
