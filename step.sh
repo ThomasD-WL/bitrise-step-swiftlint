@@ -17,7 +17,7 @@ fi
 
 cd "${linting_path}"
 
-output="$(swiftlint lint --reporter "${reporter}" ${FLAGS})"
+output="$(swiftlint lint --reporter "${reporter}" ${FLAGS} ${linting_files})"
 envman add --key "SWIFTLINT_REPORT" --value "${output}"
 echo "Saved swiftlint output in SWIFTLINT_REPORT"
 
@@ -52,7 +52,7 @@ case $reporter in
       ;;
     *)
       echo "Generating results for the test reports add-on..."
-      output="$(swiftlint lint --reporter junit ${FLAGS})"
+      output="$(swiftlint lint --reporter junit ${FLAGS} ${linting_files})"
       filename="${report_file}.xml"
       report_path="${BITRISE_DEPLOY_DIR}/${filename}"
       echo "${output}" > $report_path
